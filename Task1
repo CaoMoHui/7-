@@ -1,0 +1,35 @@
+package com.chat.deadlock;
+
+import java.util.concurrent.TimeUnit;
+
+public class Task1 implements Runnable {
+
+    private AppResource appResource;
+
+    public Task1(AppResource appResource) {
+        this.appResource = appResource;
+    }
+
+    @Override
+    public void run() {
+        synchronized (appResource.getResourceInput()) {
+            System.out.println("Task1得到了Input资源");
+            System.out.println("Task1开始工作……");
+            try {
+                Thread.sleep(TimeUnit.SECONDS.toMillis(2));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Task1尝试去获取Print资源");
+            synchronized (appResource.getResourcePrinter()) {
+                System.out.println("Task1得到了Printer资源");
+                System.out.println("Task1继续工作……");
+                try {
+                    Thread.sleep(TimeUnit.SECONDS.toMillis(3));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
