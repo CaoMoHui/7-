@@ -1,0 +1,16 @@
+package com.chat.deadlock;
+
+public class DeadLockMain {
+    public static void main(String args[]) throws InterruptedException {
+        System.out.println("程序开始");
+        AppResource appResource=new AppResource();
+        Thread t1=new Thread(new Task1(appResource),"Thread for Task1");
+        t1.start();
+        Thread t2=new Thread(new Task2(appResource),"Thread for Task2");
+        t2.start();
+
+        t1.join();
+        t2.join();
+        System.out.println("程序结束");
+    }
+}
